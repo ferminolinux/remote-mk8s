@@ -2,11 +2,6 @@
 - name: Deploy infraestructure on AWS via Terraform
   hosts: mk8s
   tasks:
-    - name: Wait Ec2 Full Launch
-      ansible.builtin.wait_for:
-        timeout: 45
-      delegate_to: localhost
-
     - name: Install mk8s
       remote_user: ubuntu
       block:
