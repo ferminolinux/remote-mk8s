@@ -18,13 +18,15 @@
         - name: Add aliases
           ansible.builtin.shell:
             cmd: |+
-              echo "alias mk8s='microk8s' > /home/k8s/.bash_aliases";
-              echo "alias kubectl='microk8s kubectl' /home/k8s/.bash_aliases"
-
-        - name: Change ownershipt of .kube
-          ansible.builtin.file:
-            src: /home/ubuntu/.kube
-            owner: k8s
+              echo "alias mk8s='microk8s' > /home/ubuntu/.bash_aliases";
+              echo "alias kubectl='microk8s kubectl' /home/ubuntu/.bash_aliases"
+        
+        - name: Add ubuntu user on mk8s group
+          ansible.builtin.user:
+            name: ubuntu
+            append: true
+            groups:
+              - microk8s
 
         - name: Start mk8s cluster
           ansible.builtin.shell:

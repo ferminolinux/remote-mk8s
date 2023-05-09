@@ -96,13 +96,10 @@ module "ec2" {
   name                   = "mk8s"
   ami                    = "ami-00ec2b52028b906bf"
   key_name = module.key.key_pair_name
-  instance_type          = "t2.micro"
+  instance_type          = var.instance_type
   vpc_security_group_ids = [module.sg.security_group_id]
   subnet_id              = module.vpc.public_subnets[0]
 }
-
-
-
 
 ###############################################################################
 # PROVISIONER BLOCK: FOR ANSIBLE
