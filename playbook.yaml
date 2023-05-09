@@ -1,0 +1,35 @@
+---
+- name: Deploy infraestructure on AWS via Terraform
+  hosts: mk8s
+  tasks:
+    - name: Wait Ec2 Full Launch
+      ansible.builtin.wait_for:
+        timeout: 45
+      delegate_to: localhost
+
+    - name: Install mk8s
+      remote_user: ubuntu
+      block:
+        - name: Install snap package
+          ansible.builtin.snap:
+            name: microk8s
+            classic: true
+
+        - name: Add aliases
+          ansible.builtin.shell:
+            cmd: |+
+              echo "alias mk8s='microk8s' > /home/k8s/.bash_aliases";
+              echo "alias kubectl='microk8s kubectl' /home/k8s/.bash_aliases"
+
+        - name: Change ownershipt of .kube
+          ansible.builtin.file:
+            src: /home/ubuntu/.kube
+            owner: k8s
+
+        - name: Start mk8s cluster
+          ansible.builtin.shell:
+            cmd: microk8s start
+
+
+    
+...
